@@ -95,12 +95,7 @@ for i= 1:ir
     end
 end
 
-display3Image = double(zeros(ir,ic));
-for i= 1:ir
-    for j=1:ic
-            display3Image(i,j) = abs(orientation(i,j));
-    end
-end
+
 display4Image = double(zeros(ir,ic));
 for i= 1:ir
     for j=1:ic
@@ -118,4 +113,4 @@ imshow(uint8(displayImage)), title('df/dy Image');
 subplot(2,3,5)
 imshow(uint8(vector_magnitude)), title('edge map');
 subplot(2,3,6)
-imshow(uint8(display3Image)), title('orientation map');
+imshow(uint8(display4Image)), title('orientation map');

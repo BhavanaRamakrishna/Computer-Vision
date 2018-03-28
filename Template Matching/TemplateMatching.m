@@ -98,11 +98,17 @@ for i=row:ir-row+1
         laplacianImage(i,j) = sum2;
     end
 end
-
+%checked for thresholding purpose
+maxim = max(max(laplacianImage));
 display4Image = double(zeros(size(display2Image,1),size(display2Image,2)));
 for i= 1:ir
     for j=1:ic
-                display4Image(i,j) = interp1([-1,1],[0,225],laplacianImage(i,j));
+                
+                if laplacianImage(i,j) >= 0.15
+                    display4Image(i,j) = 255
+                else
+                    display4Image(i,j) = interp1([-1,1],[0,225],laplacianImage(i,j));
+                end
     end
 end
 display3Image = double(zeros(size(display2Image,1),size(display2Image,2)));
@@ -113,6 +119,17 @@ for i= 1:ir
 end
 
 
+%fix template on original image for display purpose
+display5Image = display4Image;
+row = round(tr/2);
+col = round(tc/2);
+for i=row:ir-row
+    for j=col:ic-col
+        if display4Image(i,j) == 255
+            display5Image(i-row+1:i-row+tr,j-col+1:j-col+tc) = doubleTemplate;
+        end
+    end
+end     
 subplot(2,2,1)
 imshow(uint8(doubleImage)), title('Original Image');
 subplot(2,2,2)
@@ -121,3 +138,10 @@ subplot(2,2,3)
 imshow(uint8(display3Image)), title('Thresholded Correlation Image');
 subplot(2,2,4)
 imshow(uint8(display4Image)), title('Laplacian Correlation Image') ;
+figure
+subplot(1,3,1)
+imshow(uint8(img)), title('Original Image');
+subplot(1,3,2)
+imshow(uint8(templateImg)), title('Template');
+subplot(1,3,3)
+imshow(uint8(display5Image)), title('Matched Template');
